@@ -1,0 +1,28 @@
+table.list-group-item:hover,
+table.list-group-item:focus {
+    color: #555;
+    text-decoration: none;
+    background-color: #f5f5f5;
+}
+
+table.list-group-item {
+    padding: 0px;
+}
+td.list-group-td {
+    width: 100%;
+    padding: 10px 15px;
+}
+
+td.weight-td {
+    width: 10%;
+}
+
+td.deleteButtonContainer {
+    padding: 0px 2px;
+}
+
+.ui-state-highlight { height: 1.5em; line-height: 1.2em; }
+
+#draggableTable.edit-table-item:hover {
+    background-color: #f5f5f5;
+}

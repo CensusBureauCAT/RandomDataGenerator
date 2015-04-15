@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+
+    <!-- Metadata -->
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Random Data Generator">
+    <meta name="author" content="David Lee">
+
+    <!-- Stylesheets -->
+
+    <!-- Bootstrap -->
+    <link href="bootstrap-3.3.2-dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- JSX Graph -->
+    <link href="JSXGraph/jsxgraph.css" rel="stylesheet">
+    <!-- JQuery UI -->
+    <link href="jquery-ui-1.11.4/jquery-ui.css" rel="stylesheet">
+    <!--<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">-->
+    <!-- Draggable Table Plugin -->
+    <link href="dragtable-2.0.12/dragtable.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="random-number-generator-stylesheet.css" rel="stylesheet">
+    <title></title>
+
+    <!-- Javascript Libraries -->
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="jquery-1.11.2.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="bootstrap-3.3.2-dist/js/bootstrap.min.js"></script>
+    <!-- Random data generator -->
+    <script src="chance.js"></script>
+    <!-- Papa Parse csv generator -->
+    <script src="PapaParse-4.1.0/papaparse.min.js"></script>
+    <!-- JSX Graph -->
+    <script src="JSXGraph/jsxgraphcore.js"></script>
+    <!-- JQuery UI -->
+    <script src="jquery-ui-1.11.4/jquery-ui.js"></script>
+    <!-- Draggable Table Plugin -->
+    <script src="dragtable-2.0.12/jquery.dragtable.js"></script>
+
+</head>
+
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-offset-3 col-sm-6" style="padding-top: 25px; padding-bottom: 25px">
+            <!-- Title -->
+            <h1 style="text-align: center;">Random Data Generator</h1>
+        </div>
+    </div>
+    <!-- Front page config table used to set columns to your random data table -->
+    <div id="configPage">
+        <div class="row">
+            <div class="col-sm-offset-3 col-sm-6" style="border: 1px solid lightgray; border-radius: 4px">
+
+                <!-- The table used to set columns to your random data table  -->
+                <table id="configTable" class="table table-striped">
+
+                    <thead>
+                    <tr>
+                        <th>Order</th>
+                        <th>Column Title</th>
+                        <th>Data Type</th>
+                        <th>Delete</th>
+                        <th>Edit Data Source and Weight Distribution</th>
+                    </tr>
+                    </thead>
+
+                    <tbody id="configTableBody">
+
+                    <!-- Some default columns to get the user started -->
+                    <tr class="edit-table-item" style="width: 100%">
+                        <td class="order" style="text-align: center">1</td>
+                        <td>
+                            <input class="form-control columnTitle" type="text" style="width: 200px"/></td>
+                        </td>
+                        <td>
+                            <!-- Single dropdown button -->
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                                        aria-expanded="false" onclick="selectDataType(this)" style="width:100px;">
+                                    Data Type <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="#">Name</a></li>
+                                    <li><a href="#">Address</a></li>
+                                    <li><a href="#">State</a></li>
+                                    <li><a href="#">Zip Code</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="#">Number</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="#">Custom</a></li>
+                                </ul>
+                            </div>
+                        </td>
+                        <!-- Delete button -->
+                        <td class="deleteButtonContainer">
+                            <button type="button" class="btn btn-default" onclick="deleteRow(this)">
+                                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                            </button>
+                        </td>
+                        <!-- Change view button.  Brings in custom column editor.  Reuses deleteButtonContainer for styling -->
+                        <td class="deleteButtonContainer">
+                            <button class="btn btn-default"
+                                    onclick="loadGraphPage($(this).parent().parent().children().first().text())"
+                                    >Edit</button>
+                            <div class="numbersInput">
+                                <div class="input-group">
+                                    <span class="input-group-addon" style="width: 60px">Min</span>
+                                    <input type="number" id="min" class="form-control" style="width: 60px" value="1">
+                                </div>
+                                <div class="input-group" style="padding-top: 10px">
+                                    <span class="input-group-addon" style="width: 60px">Max</span>
+                                    <input type="number" id="max" class="form-control" style="width: 60px" value="10">
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <!-- Same as the previous row -->
+                    <tr class="edit-table-item" style="width: 100%">
+                        <td class="order" style="text-align: center">2</td>
+                        <td>
+                            <input class="form-control columnTitle" type="text" style="width: 200px"/></td>
+                        </td>
+                        <td>
+                            <!-- Single dropdown button -->
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false" onclick="selectDataType(this)" style="width:100px">
+                                    Data Type <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="#">Name</a></li>
+                                    <li><a href="#">Address</a></li>
+                                    <li><a href="#">State</a></li>
+                                    <li><a href="#">Zip Code</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="#">Number</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="#">Custom</a></li>
+                                </ul>
+                            </div>
+                        </td>
+                        <td class="deleteButtonContainer">
+                            <button type="button" class="btn btn-default" onclick="deleteRow(this)">
+                                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                            </button>
+                        </td>
+                        <td class="deleteButtonContainer">
+                            <button class="btn btn-default"
+                                    onclick="loadGraphPage($(this).parent().parent().children().first().text())"
+                                    >Edit</button>
+                            <div class="numbersInput">
+                                <div class="input-group">
+                                    <span class="input-group-addon" style="width: 60px">Min</span>
+                                    <input type="number" id="min" class="form-control" style="width: 60px" value="1">
+                                </div>
+                                <div class="input-group" style="padding-top: 10px">
+                                    <span class="input-group-addon" style="width: 60px">Max</span>
+                                    <input type="number" id="max" class="form-control" style="width: 60px" value="10">
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <!-- Adds new row to the config table for random data table -->
+                <div class="row" style="padding: 10px 20px;">
+                    <div class="col-sm-offset-3 col-md-6" style="justify-content: center; display: flex">
+                        <button type="button" class="btn btn-default" onclick="addNewRow()" >Add Row</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Exports random data table to CSV file.  Does not include headers. -->
+        <div class="row" style="padding: 10px 20px;">
+            <div class="col-sm-offset-3 col-sm-6" style="justify-content: center; display: flex">
+                <a href="#" class="export">Export table data into CSV</a>
+            </div>
+        </div>
+        <!-- Generates random data based off the config table from above -->
+        <div class="row" style="padding: 10px 20px;">
+            <div class="col-sm-offset-3 col-sm-6" style="justify-content: center; display: flex">
+                <button type="button" class="btn btn-sm" >Generate
+                    <input type="number" id="numberGenerated" value=10 min="1" max="1000" style="text-align: center">
+                    Rows
+                </button>
+                <button type="button" class="btn btn-default" onclick="generateTable()" >Generate</button>
+            </div>
+        </div>
+
+        <!-- Random data table.  Populated once the button above is clicked -->
+        <div class="row">
+            <div id="generatedTable" class="col-sm-offset-3 col-sm-6">
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Page for custom column editing -->
+    <div id="editSourceData" class="row" style="padding-top: 50px; height: 600px; display:none;">
+        <div class="col-sm-offset-2 col-sm-4">
+
+            <!-- Returns back to the front page -->
+            <div class="row" style="padding-bottom: 10px; padding-top: 10px">
+                <button class="btn btn-default" onclick="loadConfigPage()">Return to Table</button>
+            </div>
+
+            <!-- Button to import custom data from a CSV file.  No headers used -->
+            <div class="row" style="justify-content: center; display: flex; border: 1px solid #ddd; border-radius: 4px">
+                <div class="col-sm-4">
+                    Import CSV File
+                    <!--<div style="justify-content: center; display: flex;  width: 300px;">
+                        <input id="fileItem" type="file" onchange="importData()" style="padding: 10px;">
+                    </div> -->
+                    <input id="fileItem" type="file" onchange="importData()" style="padding: 10px; width:110px;">
+                </div>
+            </div>
+
+            <!-- Adds some space between the two panels -->
+            <div class="row" style="padding: 10px 20px; justify-content: center; display: flex;">
+
+            </div>
+
+            <!-- Custom column editor menu -->
+            <div class="row" style="padding: 10px 20px; justify-content: center; display: flex;">
+                <!-- Number of rows to add/set -->
+                <div type="button" style="background-color: lightgray; border-radius: 4px; padding: 5px 10px 5px 10px" > <!-- Add/Set -->
+                    <!-- Add row -->
+                    <button type="button" class="btn btn-default" onclick="addGraphEntry()" style="padding-top: 2px; padding-bottom: 2px" >Add</button>
+                    <!-- Set row -->
+                    <button type="button" class="btn btn-default" onclick="setGraphEntry()" style="padding-top: 2px; padding-bottom: 2px" >Set</button>
+
+                    <input type="number" id="numberOfRowsToAdd" value="1" min="0" max="10000" style="text-align: center; width: 60px;">
+                            <!-- Type of data to fill each row -->
+                            <!-- Single dropdown button -->
+                            <span class="btn-group">
+                                <button id="graphDataType" type="button" class=" dropdown-toggle"
+                                        data-toggle="dropdown" aria-expanded="false" onclick="selectGraphDataType(this)"
+                                        style="width:90px">Blank <span class="caret"></span></button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="#">Blank</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="#">Name</a></li>
+                                    <li><a href="#">Address</a></li>
+                                    <li><a href="#">State</a></li>
+                                    <li><a href="#">Zip Code</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="#">Numbers</a></li>
+                                </ul>
+                            </span>
+                    <span>Unique Rows</span>
+                </div>
+
+            </div>
+            <div class="row" id="numbersPanel" style="padding: 0px 0px 20px 0px; justify-content: center; display: flex;">
+                <div type="button" style="background-color: lightgray; border-radius: 4px; padding: 5px 10px 5px 10px" >
+                    Start<input type="number" id="start" value="1" style="text-align: center; width: 40px; margin-left: 5px">
+                    Step<input type="number" id="step" value="1" style="text-align: center; width: 40px; margin-left: 5px; margin-right: 5px">
+                    Function: y=<input type="text" id="function" value="x" style="width: 100px; margin-left: 5px">
+                </div>
+            </div>
+
+            <!-- Headers for the custom column editor -->
+            <div class="row">
+                <label style="padding-left: 35px">Name</label>
+                <label style="float: right; padding-right: 25px">Delete</label>
+                <label style="float: right; padding-right: 5px">Weight</label>
+            </div>
+            <div class="row">
+                <!-- Custom column editor -->
+                <div id="sourceList" class="list-group" style="overflow-y: auto; height:210px; padding: 0px 20px 0px 20px">
+
+                </div>
+            </div>
+        </div>
+        <!-- The graph the used to set the weight distribution -->
+        <div class="col-sm-4">
+
+            <div id="box" class="jxgbox" style="width:500px; height:500px;"></div>
+
+            <div style="padding-top: 10px;">
+                <label style="padding-right: 10px">Interval</label>
+                <input id="interval" type="number" min="1" max="1000" style="text-align: center;" value="1">
+                <button type="button" class="btn btn-default" onclick="setWeightCurveFromGraph()" >Set Weight Curve</button>
+            </div>
+        </div>
+
+        <script type="text/javascript">
+            var board = JXG.JSXGraph.initBoard('box', {boundingbox: [-15, 125, 125, -15], axis:false});
+
+            var xaxis = board.create('axis', [[0, 0], [1,0]],
+                    {name:'row',
+                        withLabel: true,
+                        label: {position: 'top',  // possible values are 'lft', 'rt', 'top', 'bot'
+                            offset: [200, 20]   // (in pixels)
+                        }
+                    });
+            var yaxis = board.create('axis', [[0, 0], [0, 1]],
+                    {name:'weight',
+                        withLabel: true,
+                        label: {
+                            position: 'rt',  // possible values are 'lft', 'rt', 'top', 'bot'
+                            offset: [10, 10]   // (in pixels)
+                        }
+                    });
+
+            var p1 = board.create('point',[1,0], {name:'Start', size:4, snapToGrid: true});
+            var p2 = board.create('point',[50,80], {size:4, snapToGrid: true});
+            var p3 = board.create('point',[100,0], {name: 'End', size:4, snapToGrid: true});
+
+            var c = board.create('curve', JXG.Math.Numerics.CatmullRomSpline([p1,p2,p3]), {strokeWidth:3});
+
+
+            function setWeightCurveFromGraph() {
+                var sampleX = [];
+                for (var i=parseInt(p1.X()); i <= parseInt(p3.X()); i=i+parseInt($("#interval").val())) {
+                    console.log(i);
+                    sampleX.push(i);
+                }
+                console.log("Intervals : ");
+                console.log(sampleX);
+
+                var newList = [];
+                var curveCoords = [];
+                var curveX, curveY;
+
+                //console.log("Setting up intervals : ");
+                for (var i = 0; i < 4; i = i + 0.001) {
+                    curveX = eval(c.X);
+                    curveY = eval(c.Y);
+                    curveCoords.push({x: curveX(i, 0.5), y: curveY(i, 0.5)});
+                }
+
+                console.log("Curve done:");
+                console.log(curveCoords);
+
+                var interval = parseInt($("#interval").val());
+                var prevPointX = p1.X();
+                var dist = 0;
+                newList.push({entry: Math.round(curveCoords[0].x), weight: Math.round(curveCoords[0].y)})
+                for (var i = 0; i < curveCoords.length; i = i + 1) {
+                    dist = Math.abs(curveCoords[i].x - prevPointX);
+                    //console.log("Checking point " + curveCoords[i].x + " found distance " + dist + " from prev point " + prevPointX);
+                    if (dist >= interval) {
+                        newList.push({entry: Math.round(curveCoords[i].x), weight: Math.round(curveCoords[i].y)});
+                        prevPointX = prevPointX + interval;
+                    }
+                }
+                console.log("New list :");
+                console.log(newList);
+
+                //$('#sourceList').html("");
+
+                var count;
+                var numberOfRowsToAdd = newList.length;
+                console.log("Numbers of rows that can be set: " + numberOfRowsToAdd);
+                console.log("Number of current rows: "  + $("#sourceList > table").length);
+                for (count = 0; count < $("#sourceList").children().length; count++) {
+                    console.log(count);
+                    console.log($("#sourceList table").eq(count).prop("tagName"));
+                    console.log($("#sourceList table").eq(count).children().first().children().first().children().first().next().prop("tagName"));
+                    //$("#sourceList table").eq(count).children().first().children().first().children().first().text(newList[count].entry);
+                    $("#sourceList table").eq(count).children().first().children().first().children().first().next().children().first().text(newList[count].weight);
+                }
+            }
+        </script>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    $("#configTableBody tr td:nth-child(5) button").hide();
+    $("#configTableBody tr td:nth-child(5) .numbersInput").hide();
+
+    // Front page scripts
+
+    var customDefaultData = [
+        {
+            data:"Cras justo odio",
+            weight: 1
+        },
+        {
+            data: "Dapibus ac facilisis in",
+            weight: 1
+        },
+        {
+            data: "Morbi leo risus",
+            weight: 1
+        },
+        {
+            data: "Porta ac consectetur ac",
+            weight: 1
+        },
+        {
+            data: "Vestibulum at eros",
+            weight: 1
+        }
+    ];
+
+    var customGraphDataList = [$.extend(true, [], customDefaultData), $.extend(true, [], customDefaultData)];
+    // Used to return Graph Data back to array
+    var customGraphDataIndex = 0;
+
+    function loadGraphPage(index) {
+
+        $("#numbersPanel").hide();
+        $("#numberOfRowsToAdd").val("1");
+        $("#graphDataType").html("Blank" + ' <span class="caret">');
+
+        console.log(index);
+        index--; // Index begins at 0
+
+        customGraphDataIndex = index;
+
+        var customGraphData = customGraphDataList[index];
+
+        $('#sourceList').html("");
+
+        for (var count = 0; count < customGraphData.length; count++) {
+            $('#sourceList').append(
+                    '<table  style="width: 100%;" class="list-group-item">' +
+                    '<tr style="width: 100%">' +
+                    '<td class="list-group-td" contenteditable="true">' +
+                    customGraphData[count].data +
+                    '</td>' +
+                    '<td class="weight-td">' +
+                    '<div type="text" class="btn btn-default" contenteditable="true" >' +
+                    customGraphData[count].weight +
+                    '</div>' +
+                    '</td>' +
+                    '<td class="deleteButtonContainer">' +
+                    '<button type="button" class="btn btn-default" onclick="$(this).parent().parent().parent().parent().remove();">' +
+                    '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>' +
+                    '</button>' +
+                    '</td>' +
+                    '</tr>' +
+                    '</table>'
+            )
+        }
+        $('#configPage').fadeOut(500,'linear', function() {$('#editSourceData').fadeIn(500)});
+    }
+
+    function loadConfigPage() {
+
+        var customGraphData = [];
+        var numOfGraphRows = $('#sourceList').find("table").length;
+        console.log("Total Rows Saved: " + numOfGraphRows);
+        var listOfGraphRows = $('#sourceList').find("table");
+        listOfGraphRows.each(function(index) {
+            customGraphData.push({
+                data: $(this).find("td").first().text(),
+                weight: $(this).find("div.btn").text()
+            });
+        });
+
+        customGraphDataList[customGraphDataIndex] = customGraphData;
+
+        $('#editSourceData').fadeOut(500,'linear', function() {$('#configPage').fadeIn(500)});
+
+    }
+
+    //-- Generates random data and creates the table
+    function generateTable() {
+        console.log("Start table generation");
+        var tableData = [];
+        var tableHeaders = [];
+        var rowsGenerated = $("#numberGenerated").val();
+        for (var i=0; i < $("#configTableBody").children().length; i++) {
+            tableHeaders.push($("#configTableBody input.columnTitle:eq(" + i + ")").val());
+        }
+        console.log(tableHeaders);
+        console.log($("#configTableBody input:eq(" + i + ")").val());
+        for (var i=0; i < $("#configTableBody tr").length; i++) {
+            console.log(i);
+            console.log($("#configTableBody tr .dropdown-toggle:eq(" + i + ")").text() + ".");
+            if ($("#configTableBody tr .dropdown-toggle:eq(" + i + ")").text() == "Name ") {
+                console.log("Names generated");
+                tableData[i] = chance.n(chance.name, rowsGenerated);
+            }
+            if ($("#configTableBody tr .dropdown-toggle:eq(" + i + ")").text() == "Address ") {
+                console.log("State generated");
+                tableData[i] = chance.n(chance.address, rowsGenerated);
+            }
+            if ($("#configTableBody tr .dropdown-toggle:eq(" + i + ")").text() == "State ") {
+                console.log("State generated");
+                tableData[i] = chance.n(chance.state, rowsGenerated);
+            }
+            if ($("#configTableBody tr .dropdown-toggle:eq(" + i + ")").text() == "Zip Code ") {
+                console.log("Zip Code generated");
+                tableData[i] = chance.n(chance.zip, rowsGenerated);
+            }
+            if ($("#configTableBody tr .dropdown-toggle:eq(" + i + ")").text() == "Number ") {
+                console.log("Numbers generated");
+                console.log("min:" + $("#configTableBody tr .numbersInput:eq(" + i + ") input:eq(0)").val());
+                console.log("max:" + $("#configTableBody tr .numbersInput:eq(" + i + ")  input:eq(1)").val());
+                function generateNumber () {
+                    return chance.integer({
+                        min: $("#configTableBody tr .numbersInput:eq(" + i + ") input:eq(0)").val(),
+                        max: $("#configTableBody tr .numbersInput:eq(" + i + ")  input:eq(1)").val()
+                    })
+                }
+                tableData[i] = chance.n(generateNumber, rowsGenerated);
+                console.log(tableData[i].length);
+            }
+            if ($("#configTableBody tr .dropdown-toggle:eq(" + i + ")").text() == "Custom ") {
+                console.log("Custom generated");
+                tableData[i] = generateCustomData(i);
+            }
+        }
+        console.log(tableData);
+
+        $("#generatedTable").html(
+                '<table id="resultTable" class="table table-striped">' +
+                '<thead>' +
+                '<tr id="tableHeaders">' +
+                '</tr>' +
+                '</thead>' +
+                '<tbody id="resultTableTBody">' +
+                '</tbody>' +
+                '</table>'
+        );
+
+        for (var i=0; i < tableHeaders.length; i++) {
+            $("#tableHeaders").append(
+                    '<th>' +
+                    tableHeaders[i] +
+                    '</th>'
+            );
+        }
+
+        var rowString = "";
+        for (var j=0; j < rowsGenerated;j++) {
+            rowString = rowString + '<tr>';
+
+            for (var i=0; i < tableData.length; i++) {
+                rowString = rowString +
+                '<td>' +
+                tableData[i][j] +
+                '</td>';
+            }
+            rowString = rowString + '</tr>';
+        }
+        // append only inserts fully formed html, hence the string.
+        $("#resultTableTBody").append(rowString);
+    }
+
+    //-- Generates custom column data based off weight distribution
+    function generateCustomData(index) {
+        var result = [];
+        var tableData = customGraphDataList[index];
+        var totalEntries = customGraphDataList[index].length;
+
+        console.log(tableData);
+        //var weightVal = [];
+
+        // Generate all the points along the curve
+        var maxWeightIndex = 0;
+
+        //$('#sourceList table').each (function () {
+        //    tableData.push({
+        //        data: $(this).find("td:first").text(),
+        //        weight: parseInt($(this).find("td:eq(1) div").text())
+        //    });
+        //    totalEntries++;
+        //});
+
+        //console.log(tableData);
+        console.log("Total entries " + totalEntries);
+        //console.log("Max weight " + maxWeightIndex);
+
+        // Sort the list by weight
+        tableData.sort(function(a, b) {
+            if (b.weight > a.weight) {
+                return true;
+            } else
+                return false;
+        });
+        console.log(tableData);
+
+        // Add data to result array.  Each sweep down list reduces the weight value by 1.
+        // If the weight value reaches zero, no more of that data is added until all weight values
+        // Reaches zero.  After of which the weight values are restored and the process begins again
+        // until the the number of generated rows is reached.
+        //var currentWeightValue = tableData.slice();
+        var currentWeightValue = jQuery.extend(true, {}, tableData);
+        result = [];
+        if (tableData) {
+            var index = 0;
+            var weightIndex = 0;
+            // Loop until the specified number of rows is generated
+            for	(index = 0; index < $("#numberGenerated").val(); index++) {
+                console.log("index " + index + " weightIndex " + weightIndex);
+
+                // Get the next row data that as that has weight > 0
+                console.log("Checking " + currentWeightValue[weightIndex].weight);
+                while (currentWeightValue[weightIndex].weight < 1) {
+                    console.log("Checking " + currentWeightValue[weightIndex].weight);
+                    weightIndex++;
+                    console.log("New weight index " + weightIndex);
+                    if (weightIndex >= totalEntries) {
+                        weightIndex = 0;
+                        if (currentWeightValue[0].weight <= 0) {
+                            console.log("Full pass complete");
+                            currentWeightValue = jQuery.extend(true, {}, tableData);
+                        }
+                    }
+                }
+
+                // Add row data to result
+                console.log("Using weight index " + weightIndex);
+                console.log("Weight value " + currentWeightValue[weightIndex].weight);
+                result.push(tableData[weightIndex].data);
+
+                // Decrement and check to see if all weights have reached zero
+                currentWeightValue[weightIndex].weight--;
+                console.log("Weight value " + currentWeightValue[weightIndex].weight);
+                weightIndex++;
+                if (weightIndex >= totalEntries) {
+                    weightIndex = 0;
+                    if (currentWeightValue[0].weight <= 0) {
+                        console.log("Full pass complete");
+                        currentWeightValue = jQuery.extend(true, {}, tableData);
+                    }
+                }
+            }
+            //console.log(tableData);
+            console.log(result);
+            result = chance.shuffle(result);
+            //console.log(result);
+
+        }
+
+        return (result);
+
+    }
+
+    //-- Clears the previous list when setting
+    function setGraphEntry() {
+        $('#sourceList').html("");
+        addGraphEntry();
+    }
+
+    //-- Adds data rows equal the number specified in the menu
+    function addGraphEntry() {
+
+        var count;
+        var numberOfRowsToAdd = $("#numberOfRowsToAdd").val();
+
+        var rowData = [];
+        console.log($("#graphDataType").text());
+        if ($("#graphDataType").text() == "Blank ") {
+            for (count = 0; count < numberOfRowsToAdd; count++) {
+                rowData.push("");
+            }
+        } else if ($("#graphDataType").text() == "Name ") {
+            rowData = chance.unique(chance.name, numberOfRowsToAdd);
+        } else if ($("#graphDataType").text() == "Address ") {
+            rowData = chance.unique(chance.address, numberOfRowsToAdd);
+        } else if ($("#graphDataType").text() == "State ") {
+            rowData = chance.unique(chance.state, numberOfRowsToAdd);
+        } else if ($("#graphDataType").text() == "Zip Code ") {
+            rowData = chance.unique(chance.zip, numberOfRowsToAdd);
+        } else if ($("#graphDataType").text() == "Numbers ") {
+            console.log("Starting Numbers");
+            var numberList = [];
+            var step = parseInt($("#step").val());
+            var start = parseInt($("#start").val());
+            console.log("Step " + step + " Start " + start);
+            for (count = start; count < start + numberOfRowsToAdd; count = count + step) {
+                var x = count;
+                console.log("Count " + count);
+                numberList.push(eval($("#function").val()));
+            }
+            console.log(numberList);
+            rowData = numberList;
+        }
+
+        console.log(rowData.length);
+
+        for (count = 0; count < numberOfRowsToAdd; count++) {
+            $('#sourceList').append(
+                    '<table  style="width: 100%;" class="list-group-item">' +
+                    '<tr style="width: 100%">' +
+                    '<td class="list-group-td" contenteditable="true">' +
+                    rowData[count] +
+                    '</td>' +
+                    '<td class="weight-td">' +
+                    '<div type="text" class="btn btn-default" contenteditable="true" >' +
+                    '1' +
+                    '</div>' +
+                    '</td>' +
+                    '<td class="deleteButtonContainer">' +
+                    '<button type="button" class="btn btn-default" onclick="$(this).parent().parent().parent().parent().remove();">' +
+                    '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>' +
+                    '</button>' +
+                    '</td>' +
+                    '</tr>' +
+                    '</table>'
+            )
+        }
+    }
+
+    //-- Imports data from CSV into custom column editor.
+    function importData() {
+        console.log("Starting import");
+        var fileInput = document.getElementById('fileItem').files[0];
+        var importResults = Papa.parse(fileInput, {
+            complete: function(importResults) {
+                console.log(importResults.data[0].length);
+
+                $('#sourceList').html("");
+                var count;
+                var numberOfRowsToAdd = importResults.data[0].length;
+                console.log("Numbers of rows imported: " + numberOfRowsToAdd);
+                for (count = 0; count < numberOfRowsToAdd; count++) {
+
+                    $('#sourceList').append(
+                            '<table style="width: 100%;" class="list-group-item">' +
+                            '<tr style="width: 100%">' +
+                            '<td class="list-group-td" contenteditable="true">' +
+                            importResults.data[0][count] +
+                            '</td>' +
+                            '<td class="weight-td">' +
+                            '<div type="text" class="btn btn-default" contenteditable="true" >' +
+                            '1' +
+                            '</div>' +
+                            '</td>' +
+                            '<td class="deleteButtonContainer">' +
+                            '<button type="button" class="btn btn-default" onclick="$(this).parent().parent().parent().parent().remove();">' +
+                            '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>' +
+                            '</button>' +
+                            '</td>' +
+                            '</tr>' +
+                            '</table>'
+                    )
+                }
+            }
+        });
+        $('#fileItem').val("");
+
+    }
+
+    //-- Runs the Javascript after the webpage is ready to be used
+    $(document).ready(function () {
+
+        //-- Exports table data (no headers) into a CSV file
+        function exportTableToCSV($table, filename) {
+
+            var $rows = $table.find('tr:has(td)'),
+
+            // Temporary delimiter characters unlikely to be typed by keyboard
+            // This is to avoid accidentally splitting the actual contents
+                    tmpColDelim = String.fromCharCode(11), // vertical tab character
+                    tmpRowDelim = String.fromCharCode(0), // null character
+
+            // actual delimiter characters for CSV format
+                    colDelim = '","',
+                    rowDelim = '"\r\n"',
+
+            // Grab text from table into CSV formatted string
+                    csv = '"' + $rows.map(function (i, row) {
+                                var $row = $(row),
+                                        $cols = $row.find('td');
+                                console.log("Number of columns: " + $cols.length);
+
+                                return $cols.map(function (j, col) {
+                                    var $col = $(col),
+                                            text = $col.text();
+                                    console.log(text);
+
+                                    //if (j == 0) { return null };
+                                    return text.replace('"', '""'); // escape double quotes
+
+                                }).get().join(tmpColDelim);
+
+
+                            }).get().join(tmpRowDelim)
+                                    .split(tmpRowDelim).join(rowDelim)
+                                    .split(tmpColDelim).join(colDelim) + '"',
+
+            // Data URI
+                    csvData = 'data:application/csv;charset=utf-8,' + encodeURIComponent(csv);
+            console.log("CSV: " + csv);
+
+            $(this)
+                    .attr({
+                        'download': filename,
+                        'href': csvData,
+                        'target': '_blank'
+                    });
+
+            console.log("Exported Rows: " + $rows.length);
+        }
+
+        //-- Links hyperlink to export function
+        // This must be a hyperlink
+        $(".export").on('click', function (event) {
+            // CSV
+            exportTableToCSV.apply(this, [$('#resultTable'), 'export.csv']);
+
+            // IF CSV, don't do event.preventDefault() or return false
+            // We actually need this to be a typical hyperlink
+        });
+    });
+
+    //-- Makes the table rows rearrangeable
+    $(function() {
+        $( "#configTableBody" ).sortable({
+            placeholder: "ui-state-highlight",
+            //items: 'tr',
+            update: function (event, ui) {
+                $('#configTableBody > tr > .order').each(function (index) {
+                    $(this).text(index + 1);
+                });
+            }
+        });
+        $( "#configTableBody" ).disableSelection();
+    });
+
+    //-- Makes the table columns rearrangable
+    //$('#configTable').dragtable();
+
+
+    //-- Updates the dropdown menu label and column name to the selection for the config table
+    function selectDataType(object) {
+        //console.log($(object).next().prop("tagName"));
+        $(object).next().on('click', 'li a', function(){
+
+            $(object).html($(this).text() + ' <span class="caret">');
+            $(object).parent().parent().prev().find("input").val($(this).text());
+            if ($(object).text() == "Custom ") {
+                //console.log($(object).parent().parent().next().next().children().first().prop("tagName"));
+                //$(object).parent().parent().next().next().children().first().css("visibility", "visible");
+                // Fade Custom Button
+
+                // Fade Numbers Buttons
+                $(object).parent().parent().next().next().children().first().next().fadeOut("slow",
+                 function() {$(object).parent().parent().next().next().children().first().fadeIn("slow");}
+                );
+            } else {
+                //$(object).parent().parent().next().next().children().first().css("visibility", "hidden");
+
+                if ($(object).text() == "Number ") {
+                    $(object).parent().parent().next().next().children().first().fadeOut("slow",
+                    function(){
+                        $(object).parent().parent().next().next().children().first().next().fadeIn("slow")});
+                } else {
+                    $(object).parent().parent().next().next().children().first().fadeOut("slow",
+                    function() {
+                        $(object).parent().parent().next().next().children().first().next().fadeOut("slow")});
+                }
+            }
+        });
+
+    }
+
+    //-- Updates the dropdown menu label and column name to the selection for the custom column
+    function selectGraphDataType(object) {
+        //console.log($(object).next().prop("tagName"));
+        $(object).next().on('click', 'li a', function(){
+
+            $(object).html($(this).text() + ' <span class="caret">');
+            //$(object).parent().parent().prev().find("input").val($(this).text());
+
+            if ($("#graphDataType").text() == "Numbers ") {
+                console.log("Showing numbers menu");
+                $("#numbersPanel").show("slow");
+            } else { //if ($("#numbersPanel").css("visibility") == "visible") {
+                console.log("Closing numbers menu");
+                $("#numbersPanel").hide("slow");
+            }
+        });
+
+    }
+
+    //-- Adds new row to the custom column editor
+    function addNewRow() {
+        $('#configTableBody').append(
+                '<tr class="edit-table-item" style="width: 100%">' +
+                '<td class="order" style="text-align: center">0</td>' +
+                '<td>' +
+                '<input class="form-control columnTitle" type="text" style="width: 200px"/></td>' +
+                '</td>' +
+                '<td>' +
+                '<!-- Single button -->' +
+                '<div class="btn-group">' +
+                '<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false" onclick="selectDataType(this)" style="width:100px">' +
+                'Data Type <span class="caret"></span>' +
+                '</button>' +
+                '<ul class="dropdown-menu" role="menu">' +
+                '<li><a href="#">Name</a></li>' +
+                '<li><a href="#">Address</a></li>' +
+                '<li><a href="#">State</a></li>' +
+                '<li><a href="#">Zip Code</a></li>' +
+                '<li class="divider"></li>' +
+                '<li><a href="#">Number</a></li>' +
+                '<li class="divider"></li>' +
+                '<li><a href="#">Custom</a></li>' +
+                '</ul>' +
+                '</div>' +
+                '</td>' +
+                '<td class="deleteButtonContainer">' +
+                '<button type="button" class="btn btn-default" onclick="deleteRow(this)">' +
+                '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>' +
+                '</button>' +
+                '</td>' +
+                '<td class="deleteButtonContainer">' +
+                '<button class="btn btn-default" onclick="loadGraphPage($(this).parent().parent().children().first().text())" style="display:none;">Edit</button>' +
+                '<div class="numbersInput" style="display:none">' +
+                '<div class="input-group">' +
+                '<span class="input-group-addon" style="width: 60px">Min</span>' +
+                '<input type="number" id="min" class="form-control" style="width: 60px" value="1">' +
+                '</div>' +
+                '<div class="input-group" style="padding-top: 10px">' +
+                '<span class="input-group-addon" style="width: 60px">Max</span>' +
+                '<input type="number" id="max" class="form-control" style="width: 60px" value="10">' +
+                '</div>' +
+                '</div>' +
+                '</td>' +
+                '</tr>'
+        )
+        $('#configTableBody > tr > .order').each(function (index) {
+            $(this).text(index + 1);
+        });
+
+        customGraphDataList.push($.extend(true, [], customDefaultData));
+    }
+
+    function deleteRow(object) {
+
+        console.log("Removing index" + ($(object).parent().parent().children().first().text() - 1));
+        customGraphDataList.splice($(object).parent().parent().children().first().text() - 1, 1);
+        console.log("Data List now has " + customGraphDataList.length);
+
+        $(object).parent().parent().remove();
+
+        $('#configTableBody > tr > .order').each(function (index) {
+            $(this).text(index + 1);
+        });
+    }
+
+</script>
+</body>
+</html>
