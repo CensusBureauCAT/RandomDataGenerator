@@ -89,6 +89,10 @@
                                     <li><a href="#">Address</a></li>
                                     <li><a href="#">State</a></li>
                                     <li><a href="#">Zip Code</a></li>
+                                    <li><a href="#">Phone</a></li>
+                                    <li><a href="#">SSN</a></li>
+                                    <li><a href="#">Gender</a></li>
+                                    <li><a href="#">Date</a></li>
                                     <li class="divider"></li>
                                     <li><a href="#">Number</a></li>
                                     <li class="divider"></li>
@@ -106,15 +110,16 @@
                         <td class="deleteButtonContainer">
                             <button class="btn btn-default"
                                     onclick="loadGraphPage($(this).parent().parent().children().first().text())"
+                                    style="display:none;"
                                     >Edit</button>
-                            <div class="numbersInput">
+                            <div class="numbersInput" style="display:none">
                                 <div class="input-group">
                                     <span class="input-group-addon" style="width: 60px">Min</span>
-                                    <input type="number" id="min" class="form-control" style="width: 60px" value="1">
+                                    <input type="number" class="form-control" style="width: 60px" value="1">
                                 </div>
                                 <div class="input-group" style="padding-top: 10px">
                                     <span class="input-group-addon" style="width: 60px">Max</span>
-                                    <input type="number" id="max" class="form-control" style="width: 60px" value="10">
+                                    <input type="number" class="form-control" style="width: 60px" value="10">
                                 </div>
                             </div>
                         </td>
@@ -137,6 +142,10 @@
                                     <li><a href="#">Address</a></li>
                                     <li><a href="#">State</a></li>
                                     <li><a href="#">Zip Code</a></li>
+                                    <li><a href="#">Phone</a></li>
+                                    <li><a href="#">SSN</a></li>
+                                    <li><a href="#">Gender</a></li>
+                                    <li><a href="#">Date</a></li>
                                     <li class="divider"></li>
                                     <li><a href="#">Number</a></li>
                                     <li class="divider"></li>
@@ -152,15 +161,16 @@
                         <td class="deleteButtonContainer">
                             <button class="btn btn-default"
                                     onclick="loadGraphPage($(this).parent().parent().children().first().text())"
+                                    style="display:none;"
                                     >Edit</button>
-                            <div class="numbersInput">
+                            <div class="numbersInput" style="display:none">
                                 <div class="input-group">
                                     <span class="input-group-addon" style="width: 60px">Min</span>
-                                    <input type="number" id="min" class="form-control" style="width: 60px" value="1">
+                                    <input type="number" class="form-control" style="width: 60px" value="1">
                                 </div>
                                 <div class="input-group" style="padding-top: 10px">
                                     <span class="input-group-addon" style="width: 60px">Max</span>
-                                    <input type="number" id="max" class="form-control" style="width: 60px" value="10">
+                                    <input type="number" class="form-control" style="width: 60px" value="10">
                                 </div>
                             </div>
                         </td>
@@ -233,9 +243,9 @@
                 <!-- Number of rows to add/set -->
                 <div type="button" style="background-color: lightgray; border-radius: 4px; padding: 5px 10px 5px 10px" > <!-- Add/Set -->
                     <!-- Add row -->
-                    <button type="button" class="btn btn-default" onclick="addGraphEntry()" style="padding-top: 2px; padding-bottom: 2px" >Add</button>
+                    <button type="button" class="btn btn-default" onclick="addGraphEntries()" style="padding-top: 2px; padding-bottom: 2px" >Add</button>
                     <!-- Set row -->
-                    <button type="button" class="btn btn-default" onclick="setGraphEntry()" style="padding-top: 2px; padding-bottom: 2px" >Set</button>
+                    <button type="button" class="btn btn-default" onclick="setGraphEntries()" style="padding-top: 2px; padding-bottom: 2px" >Set</button>
 
                     <input type="number" id="numberOfRowsToAdd" value="1" min="0" max="10000" style="text-align: center; width: 60px;">
                             <!-- Type of data to fill each row -->
@@ -251,6 +261,10 @@
                                     <li><a href="#">Address</a></li>
                                     <li><a href="#">State</a></li>
                                     <li><a href="#">Zip Code</a></li>
+                                    <li><a href="#">Phone</a></li>
+                                    <li><a href="#">SSN</a></li>
+                                    <li><a href="#">Gender</a></li>
+                                    <li><a href="#">Date</a></li>
                                     <li class="divider"></li>
                                     <li><a href="#">Numbers</a></li>
                                 </ul>
@@ -289,21 +303,27 @@
                 <label style="padding-right: 10px">Interval</label>
                 <input id="interval" type="number" min="1" max="1000" style="text-align: center;" value="1">
                 <button type="button" class="btn btn-default" onclick="setWeightCurveFromGraph()" >Set Weight Curve</button>
+                <span>  Line </span><input class="myCheckbox" type="checkbox" onclick="switchGraph()">
             </div>
         </div>
 
         <script type="text/javascript">
+            // Examples from http://jsxgraph.uni-bayreuth.de/wp/documentation/
+            // and examples from library from http://www.onemathematicalcat.org/JSXGraphDocs/JSXGraphDocs.htm#alphaList
+
             var board = JXG.JSXGraph.initBoard('box', {boundingbox: [-15, 125, 125, -15], axis:false});
 
-            var xaxis = board.create('axis', [[0, 0], [1,0]],
-                    {name:'row',
+            var xaxis = board.create('axis', [[-1000, 0], [1000,0]],
+                    {
+                        name:'row',
                         withLabel: true,
                         label: {position: 'top',  // possible values are 'lft', 'rt', 'top', 'bot'
                             offset: [200, 20]   // (in pixels)
                         }
                     });
-            var yaxis = board.create('axis', [[0, 0], [0, 1]],
-                    {name:'weight',
+            var yaxis = board.create('axis', [[0, -1000], [0, 1000]],
+                    {
+                        name:'weight',
                         withLabel: true,
                         label: {
                             position: 'rt',  // possible values are 'lft', 'rt', 'top', 'bot'
@@ -315,13 +335,61 @@
             var p2 = board.create('point',[50,80], {size:4, snapToGrid: true});
             var p3 = board.create('point',[100,0], {name: 'End', size:4, snapToGrid: true});
 
-            var c = board.create('curve', JXG.Math.Numerics.CatmullRomSpline([p1,p2,p3]), {strokeWidth:3});
+            var pointsArray = [p1, p2, p3];
+            var lineList = [];
 
+            if (!$('.myCheckbox').is(':checked')) {
+                var c = board.create('curve', JXG.Math.Numerics.CatmullRomSpline([p1, p2, p3]), {strokeWidth: 3});
+            } else {
+                // Draw a line graph
+                for (arrayIndex in pointsArray) {
+                    //console.log("line list index " + arrayIndex);
+                    //console.log("Array length " + pointsArray.length);
+                    if ((parseInt(arrayIndex) + 1) == pointsArray.length) {
+                        //console.log("Breaking line list at " + arrayIndex);
+                        break;
+                    }
+                    var line = board.create('line', [pointsArray[parseInt(arrayIndex)], pointsArray[parseInt(arrayIndex) + 1]], {straightFirst:false, straightLast:false, strokeWidth:2});
+                    lineList.push(line);
+                }
+            }
+
+            function switchGraph() {
+
+                if (!$('.myCheckbox').is(':checked')) {
+                    if (lineList != []) {
+                        // Remove line graph
+                        for (arrayIndex in lineList) {
+                            board.removeObject(lineList[arrayIndex]);
+                        }
+                    }
+
+                    // Draw curve graph
+                    c = board.create('curve', JXG.Math.Numerics.CatmullRomSpline(pointsArray), {strokeWidth: 3});
+                } else {
+                    // Remove and draw curve graph
+                    board.removeObject(c);
+
+                    lineList = [];
+                    // Draw line graph
+                    for (arrayIndex in pointsArray) {
+                        if ((parseInt(arrayIndex) + 1) == pointsArray.length) {
+                            break;
+                        }
+                        var line = board.create('line', [pointsArray[parseInt(arrayIndex)], pointsArray[parseInt(arrayIndex) + 1]], {
+                            straightFirst: false,
+                            straightLast: false,
+                            strokeWidth: 2
+                        });
+                        lineList.push(line);
+                    }
+                }
+            }
 
             function setWeightCurveFromGraph() {
                 var sampleX = [];
                 for (var i=parseInt(p1.X()); i <= parseInt(p3.X()); i=i+parseInt($("#interval").val())) {
-                    console.log(i);
+                    //console.log(i);
                     sampleX.push(i);
                 }
                 console.log("Intervals : ");
@@ -331,47 +399,231 @@
                 var curveCoords = [];
                 var curveX, curveY;
 
-                //console.log("Setting up intervals : ");
-                for (var i = 0; i < 4; i = i + 0.001) {
-                    curveX = eval(c.X);
-                    curveY = eval(c.Y);
-                    curveCoords.push({x: curveX(i, 0.5), y: curveY(i, 0.5)});
-                }
+                // Trace points along lines at set intervals
+                if ($('.myCheckbox').is(':checked')) {
+                    for (i in sampleX) {
+                        var sampleIndex = i;
 
-                console.log("Curve done:");
-                console.log(curveCoords);
+                        for (j in pointsArray) {
+                            var pointIndex = parseInt(j);
 
-                var interval = parseInt($("#interval").val());
-                var prevPointX = p1.X();
-                var dist = 0;
-                newList.push({entry: Math.round(curveCoords[0].x), weight: Math.round(curveCoords[0].y)})
-                for (var i = 0; i < curveCoords.length; i = i + 1) {
-                    dist = Math.abs(curveCoords[i].x - prevPointX);
-                    //console.log("Checking point " + curveCoords[i].x + " found distance " + dist + " from prev point " + prevPointX);
-                    if (dist >= interval) {
-                        newList.push({entry: Math.round(curveCoords[i].x), weight: Math.round(curveCoords[i].y)});
-                        prevPointX = prevPointX + interval;
+                            // Exit on last point
+                            if ((pointIndex + 1) == pointsArray.length) {
+                                break;
+                            }
+
+                            // Obtain coordinate point on line
+                            if (sampleX[sampleIndex] >= pointsArray[pointIndex].X() &&
+                                sampleX[sampleIndex] <= pointsArray[pointIndex + 1].X()) {
+                                curveX = sampleX[sampleIndex];
+                                var rise = pointsArray[pointIndex + 1].Y() - pointsArray[pointIndex].Y();
+                                var run = pointsArray[pointIndex + 1].X() - pointsArray[pointIndex].X();
+                                var offset = sampleX[sampleIndex] - pointsArray[pointIndex].X();
+                                curveY = Math.round((rise/run)*offset + pointsArray[pointIndex].Y());
+                                newList.push({entry: curveX, weight: curveY});
+                                break;
+                            }
+
+                        }
+
+                    }
+
+                } else {
+                    // Trace points along curve at set intervals
+                    //console.log("Setting up curve path coordinates : ");
+                    for (var i = 0; i < 4; i = i + 0.001) {
+                        curveX = eval(c.X);
+                        curveY = eval(c.Y);
+                        curveCoords.push({x: curveX(i, 0.5), y: curveY(i, 0.5)});
+                    }
+
+                    console.log("Curve done:");
+                    console.log(curveCoords);
+
+                    var interval = parseInt($("#interval").val());
+                    var prevPointX = p1.X();
+                    var dist = 0;
+                    newList.push({entry: Math.round(curveCoords[0].x), weight: Math.round(curveCoords[0].y)});
+                    for (var i = 0; i < curveCoords.length; i = i + 1) {
+                        dist = Math.abs(curveCoords[i].x - prevPointX);
+                        //console.log("Checking point " + curveCoords[i].x + " found distance " + dist + " from prev point " + prevPointX);
+                        if (dist >= interval) {
+                            newList.push({entry: Math.round(curveCoords[i].x), weight: Math.round(curveCoords[i].y)});
+                            prevPointX = prevPointX + interval;
+                        }
                     }
                 }
+
                 console.log("New list :");
-                console.log(newList);
+                var tempArray = [];
+                for (index in newList) {
+                    tempArray.push(newList[index].weight);
+                }
+                console.log(tempArray);
 
                 //$('#sourceList').html("");
 
+                // Update data table with new weights
                 var count;
                 var numberOfRowsToAdd = newList.length;
                 console.log("Numbers of rows that can be set: " + numberOfRowsToAdd);
                 console.log("Number of current rows: "  + $("#sourceList > table").length);
                 for (count = 0; count < $("#sourceList").children().length; count++) {
-                    console.log(count);
-                    console.log($("#sourceList table").eq(count).prop("tagName"));
-                    console.log($("#sourceList table").eq(count).children().first().children().first().children().first().next().prop("tagName"));
-                    //$("#sourceList table").eq(count).children().first().children().first().children().first().text(newList[count].entry);
-                    $("#sourceList table").eq(count).children().first().children().first().children().first().next().children().first().text(newList[count].weight);
+                    for (curveLinePoint in newList) {
+                        //console.log("Checking value " + Math.abs(count - newList[parseInt(curveLinePoint)].entry));
+                        if (Math.abs((count + 1) - newList[parseInt(curveLinePoint)].entry) <= 0.5) {
+                            //console.log(count);
+                            //console.log($("#sourceList table").eq(count).prop("tagName"));
+                            //console.log($("#sourceList table").eq(count).children().first().children().first().children().first().next().prop("tagName"));
+                            //$("#sourceList table").eq(count).children().first().children().first().children().first().text(newList[count].entry);
+                            $("#sourceList table").eq(count).children().first().children().first().children().first().next().children().first().text(newList[parseInt(curveLinePoint)].weight);
+                            break;
+                        }
+                    }
                 }
             }
-        </script>
 
+            // From http://jsxgraph.uni-bayreuth.de/wiki/index.php/Browser_event_and_coordinates
+            var deletePoint = false;
+            var getMouseCoords = function(e, i) {
+                        var eachPoint;
+                        var cPos = board.getCoordsTopLeftCorner(e, i),
+                                absPos = JXG.getPosition(e, i),
+                                dx = absPos[0]-cPos[0],
+                                dy = absPos[1]-cPos[1];
+
+                        return new JXG.Coords(JXG.COORDS_BY_SCREEN, [dx, dy], board);
+                    };
+            var up = function(e) {
+                console.log("Mouse up");
+                if (!deletePoint) {
+                    return;
+                } else {
+                    deletePoint = false;
+                }
+
+                var canCreate = true, i, coords, el;
+
+                if (e[JXG.touchProperty]) {
+                    // index of the finger that is used to extract the coordinates
+                    i = 0;
+                }
+                coords = getMouseCoords(e, i);
+
+
+                for (el in board.objects) {
+                    //console.log("Name: " + JXG.getRef(board, board.objects[el]).name);
+
+                   // Check to see if where you click has a point
+                    if(JXG.isPoint(board.objects[el]) && board.objects[el].hasPoint(coords.scrCoords[1], coords.scrCoords[2])) {
+
+                        //console.log("Name of Point: " + JXG.getRef(board, board.objects[el]).name);
+                        canCreate = false;
+
+                        if (board.objects[el].name == "Start" || board.objects[el].name == "End") {
+                            break;
+                        }
+
+                        if (!$('.myCheckbox').is(':checked')) {
+                            // Remove the point clicked on and recreate the curve
+                            board.removeObject(c);
+                        } else {
+                            // Remove line graph
+                            for (arrayIndex in lineList) {
+                                board.removeObject(lineList[arrayIndex]);
+                            }
+                            lineList = [];
+                        }
+                        board.removeObject(board.objects[el]);
+
+
+                        for (arrayIndex in pointsArray) {
+                            //console.log("Checking point from pointsArray :" + arrayIndex);
+                            if (pointsArray[arrayIndex].hasPoint(coords.scrCoords[1], coords.scrCoords[2])) {
+                                //console.log("Removing point index from pointsArray: " + arrayIndex);
+                                pointsArray.splice(arrayIndex, 1);
+                                break;
+                            }
+                        }
+
+                        if (!$('.myCheckbox').is(':checked')) {
+                            c = board.create('curve', JXG.Math.Numerics.CatmullRomSpline(pointsArray), {strokeWidth: 3});
+                        } else {
+                            // Draw line graph
+                            for (arrayIndex in pointsArray) {
+                                if ((parseInt(arrayIndex) + 1) == pointsArray.length) {
+                                    break;
+                                }
+                                var line = board.create('line', [pointsArray[parseInt(arrayIndex)], pointsArray[parseInt(arrayIndex) + 1]], {straightFirst:false, straightLast:false, strokeWidth:2});
+                                lineList.push(line);
+                            }
+                        }
+                        break;
+                    }
+                }
+
+                if (canCreate) {
+                    var insertIndex = 1;
+
+                    // Coords attribute obtained from http://jsfiddle.net/migerh/PgC3m/
+                    for (arrayIndex in pointsArray) {
+                        //console.log ("Index/x-coord: " + arrayIndex + "/" + pointsArray[arrayIndex].coords.usrCoords[1]);
+                        if (coords.usrCoords[1] > pointsArray[arrayIndex].coords.usrCoords[1]) {
+                            insertIndex = parseInt(arrayIndex) + 1;
+                        }
+                        console.log("Insert index: " + insertIndex);
+                    }
+                    if (insertIndex >= pointsArray.length) {
+                        insertIndex = pointsArray.length - 1;
+                    }
+
+                    pointsArray.splice(insertIndex, 0, board.create('point', [coords.usrCoords[1], coords.usrCoords[2]], {
+                        size: 4,
+                        snapToGrid: true
+                    }));
+
+                    if (!$('.myCheckbox').is(':checked')) {
+                        console.log("Updating curve");
+                        // Remove and draw curve graph
+                        board.removeObject(c);
+                        c = board.create('curve', JXG.Math.Numerics.CatmullRomSpline(pointsArray), {strokeWidth: 3});
+                    } else {
+                        // Remove line graph
+                        for (arrayIndex in lineList) {
+                            board.removeObject(lineList[arrayIndex]);
+                        }
+                        lineList = [];
+                        // Draw line graph
+                        for (arrayIndex in pointsArray) {
+                            if ((parseInt(arrayIndex) + 1) == pointsArray.length) {
+                                break;
+                            }
+                            var line = board.create('line', [pointsArray[parseInt(arrayIndex)], pointsArray[parseInt(arrayIndex) + 1]], {
+                                straightFirst: false,
+                                straightLast: false,
+                                strokeWidth: 2
+                            });
+                            lineList.push(line);
+                        }
+                    }
+
+
+                }
+            };
+
+            var down = function(e) {
+                console.log("Clicking mouse");
+                deletePoint = true;
+            }
+            var move = function(e,mode) {
+                console.log("Moved mouse");
+                deletePoint = false;
+            }
+            // Assign mouse/touch events
+            board.on('down', down);
+            board.on('move', move);
+            board.on('up', up);
+        </script>
     </div>
 
 </div>
@@ -417,7 +669,7 @@
         $("#numberOfRowsToAdd").val("1");
         $("#graphDataType").html("Blank" + ' <span class="caret">');
 
-        console.log(index);
+        console.log("Editing column " + index);
         index--; // Index begins at 0
 
         customGraphDataIndex = index;
@@ -439,7 +691,7 @@
                     '</div>' +
                     '</td>' +
                     '<td class="deleteButtonContainer">' +
-                    '<button type="button" class="btn btn-default" onclick="$(this).parent().parent().parent().parent().remove();">' +
+                    '<button type="button" class="btn btn-default" onclick="deleteGraphEntry(this)">' +
                     '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>' +
                     '</button>' +
                     '</td>' +
@@ -475,11 +727,16 @@
         var tableData = [];
         var tableHeaders = [];
         var rowsGenerated = $("#numberGenerated").val();
+        if (rowsGenerated < 0) {
+            return;
+        }
+
         for (var i=0; i < $("#configTableBody").children().length; i++) {
             tableHeaders.push($("#configTableBody input.columnTitle:eq(" + i + ")").val());
         }
+        console.log("Headers:");
         console.log(tableHeaders);
-        console.log($("#configTableBody input:eq(" + i + ")").val());
+
         for (var i=0; i < $("#configTableBody tr").length; i++) {
             console.log(i);
             console.log($("#configTableBody tr .dropdown-toggle:eq(" + i + ")").text() + ".");
@@ -487,19 +744,39 @@
                 console.log("Names generated");
                 tableData[i] = chance.n(chance.name, rowsGenerated);
             }
-            if ($("#configTableBody tr .dropdown-toggle:eq(" + i + ")").text() == "Address ") {
-                console.log("State generated");
+            else if ($("#configTableBody tr .dropdown-toggle:eq(" + i + ")").text() == "Address ") {
+                console.log("Address generated");
                 tableData[i] = chance.n(chance.address, rowsGenerated);
             }
-            if ($("#configTableBody tr .dropdown-toggle:eq(" + i + ")").text() == "State ") {
+            else if ($("#configTableBody tr .dropdown-toggle:eq(" + i + ")").text() == "State ") {
                 console.log("State generated");
                 tableData[i] = chance.n(chance.state, rowsGenerated);
             }
-            if ($("#configTableBody tr .dropdown-toggle:eq(" + i + ")").text() == "Zip Code ") {
+            else if ($("#configTableBody tr .dropdown-toggle:eq(" + i + ")").text() == "Zip Code ") {
                 console.log("Zip Code generated");
                 tableData[i] = chance.n(chance.zip, rowsGenerated);
             }
-            if ($("#configTableBody tr .dropdown-toggle:eq(" + i + ")").text() == "Number ") {
+            else if ($("#configTableBody tr .dropdown-toggle:eq(" + i + ")").text() == "Phone ") {
+                console.log("Telephone generated");
+                tableData[i] = chance.n(chance.phone, rowsGenerated);
+            }
+            else if ($("#configTableBody tr .dropdown-toggle:eq(" + i + ")").text() == "SSN ") {
+                console.log("SSN generated");
+                tableData[i] = chance.n(chance.ssn, rowsGenerated);
+            }
+            else if ($("#configTableBody tr .dropdown-toggle:eq(" + i + ")").text() == "Gender ") {
+                console.log("Gender generated");
+                tableData[i] = chance.n(chance.gender, rowsGenerated);
+
+            }
+            else if ($("#configTableBody tr .dropdown-toggle:eq(" + i + ")").text() == "Date ") {
+                console.log("Date generated");
+                function dateString() {
+                    return chance.date({string: true});
+                }
+                tableData[i] = chance.n(dateString, rowsGenerated);
+            }
+            else if ($("#configTableBody tr .dropdown-toggle:eq(" + i + ")").text() == "Number ") {
                 console.log("Numbers generated");
                 console.log("min:" + $("#configTableBody tr .numbersInput:eq(" + i + ") input:eq(0)").val());
                 console.log("max:" + $("#configTableBody tr .numbersInput:eq(" + i + ")  input:eq(1)").val());
@@ -512,7 +789,7 @@
                 tableData[i] = chance.n(generateNumber, rowsGenerated);
                 console.log(tableData[i].length);
             }
-            if ($("#configTableBody tr .dropdown-toggle:eq(" + i + ")").text() == "Custom ") {
+            else if ($("#configTableBody tr .dropdown-toggle:eq(" + i + ")").text() == "Custom ") {
                 console.log("Custom generated");
                 tableData[i] = generateCustomData(i);
             }
@@ -520,7 +797,7 @@
         console.log(tableData);
 
         $("#generatedTable").html(
-                '<table id="resultTable" class="table table-striped">' +
+                '<table id="resultTable" class="table table-striped" style="display: none;">' +
                 '<thead>' +
                 '<tr id="tableHeaders">' +
                 '</tr>' +
@@ -538,20 +815,21 @@
             );
         }
 
-        var rowString = "";
+        var rowsString = "";
         for (var j=0; j < rowsGenerated;j++) {
-            rowString = rowString + '<tr>';
+            rowsString = rowsString + '<tr>';
 
             for (var i=0; i < tableData.length; i++) {
-                rowString = rowString +
+                rowsString = rowsString +
                 '<td>' +
                 tableData[i][j] +
                 '</td>';
             }
-            rowString = rowString + '</tr>';
+            rowsString = rowsString + '</tr>';
         }
         // append only inserts fully formed html, hence the string.
-        $("#resultTableTBody").append(rowString);
+        $("#resultTableTBody").append(rowsString);
+        $("#resultTable").fadeIn("slow");
     }
 
     //-- Generates custom column data based off weight distribution
@@ -645,18 +923,22 @@
     }
 
     //-- Clears the previous list when setting
-    function setGraphEntry() {
-        $('#sourceList').html("");
-        addGraphEntry();
+    function setGraphEntries() {
+        $('#sourceList').fadeOut("slow", function () {
+            $('#sourceList').html("");
+            addGraphEntries();
+            $('#sourceList').fadeIn("slow");
+        });
     }
 
     //-- Adds data rows equal the number specified in the menu
-    function addGraphEntry() {
+    function addGraphEntries() {
 
         var count;
         var numberOfRowsToAdd = $("#numberOfRowsToAdd").val();
 
         var rowData = [];
+        // Generate data from drop down box selection
         console.log($("#graphDataType").text());
         if ($("#graphDataType").text() == "Blank ") {
             for (count = 0; count < numberOfRowsToAdd; count++) {
@@ -667,26 +949,49 @@
         } else if ($("#graphDataType").text() == "Address ") {
             rowData = chance.unique(chance.address, numberOfRowsToAdd);
         } else if ($("#graphDataType").text() == "State ") {
-            rowData = chance.unique(chance.state, numberOfRowsToAdd);
+            if (numberOfRowsToAdd > 51) {
+                alert("There are only 51 unique states available.");
+                return;
+            } else {
+                rowData = chance.unique(chance.state, numberOfRowsToAdd);
+            }
         } else if ($("#graphDataType").text() == "Zip Code ") {
             rowData = chance.unique(chance.zip, numberOfRowsToAdd);
+        } else if ($("#graphDataType").text() == "Phone ") {
+            rowData = chance.unique(chance.phone, numberOfRowsToAdd);
+        } else if ($("#graphDataType").text() == "SSN ") {
+            rowData = chance.unique(chance.ssn, numberOfRowsToAdd);
+        } else if ($("#graphDataType").text() == "Gender ") {
+            if (numberOfRowsToAdd > 2) {
+                alert("There are only 2 unique genders available.");
+                return;
+            } else {
+                rowData = chance.unique(chance.gender, numberOfRowsToAdd);
+            }
+        } else if ($("#graphDataType").text() == "Date ") {
+            function dateString() {
+                return chance.date({string: true});
+            }
+            rowData = chance.unique(dateString, numberOfRowsToAdd);
         } else if ($("#graphDataType").text() == "Numbers ") {
             console.log("Starting Numbers");
             var numberList = [];
             var step = parseInt($("#step").val());
             var start = parseInt($("#start").val());
             console.log("Step " + step + " Start " + start);
-            for (count = start; count < start + numberOfRowsToAdd; count = count + step) {
+            for (count = start; count < start + parseInt(numberOfRowsToAdd); count = count + step) {
                 var x = count;
-                console.log("Count " + count);
+                console.log("Number result: " + count);
                 numberList.push(eval($("#function").val()));
             }
+            console.log("Numbers list:");
             console.log(numberList);
             rowData = numberList;
         }
 
-        console.log(rowData.length);
+        console.log("Columns found: " + rowData.length);
 
+        // Add generated data to the custom list
         for (count = 0; count < numberOfRowsToAdd; count++) {
             $('#sourceList').append(
                     '<table  style="width: 100%;" class="list-group-item">' +
@@ -700,7 +1005,7 @@
                     '</div>' +
                     '</td>' +
                     '<td class="deleteButtonContainer">' +
-                    '<button type="button" class="btn btn-default" onclick="$(this).parent().parent().parent().parent().remove();">' +
+                    '<button type="button" class="btn btn-default" onclick="deleteGraphEntry(this)">' +
                     '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>' +
                     '</button>' +
                     '</td>' +
@@ -708,6 +1013,13 @@
                     '</table>'
             )
         }
+    }
+
+    //-- Deletes an entry in the custom data page
+    function deleteGraphEntry(object) {
+        $(object).parent().parent().parent().parent().slideUp("slow", function() {
+            $(object).parent().parent().parent().parent().remove();
+        })
     }
 
     //-- Imports data from CSV into custom column editor.
@@ -886,7 +1198,7 @@
     //-- Adds new row to the custom column editor
     function addNewRow() {
         $('#configTableBody').append(
-                '<tr class="edit-table-item" style="width: 100%">' +
+                '<tr class="edit-table-item" style="width: 100%; display: none">' +
                 '<td class="order" style="text-align: center">0</td>' +
                 '<td>' +
                 '<input class="form-control columnTitle" type="text" style="width: 200px"/></td>' +
@@ -902,6 +1214,10 @@
                 '<li><a href="#">Address</a></li>' +
                 '<li><a href="#">State</a></li>' +
                 '<li><a href="#">Zip Code</a></li>' +
+                '<li><a href="#">Phone</a></li>' +
+                '<li><a href="#">SSN</a></li>' +
+                '<li><a href="#">Gender</a></li>' +
+                '<li><a href="#">Date</a></li>' +
                 '<li class="divider"></li>' +
                 '<li><a href="#">Number</a></li>' +
                 '<li class="divider"></li>' +
@@ -919,11 +1235,11 @@
                 '<div class="numbersInput" style="display:none">' +
                 '<div class="input-group">' +
                 '<span class="input-group-addon" style="width: 60px">Min</span>' +
-                '<input type="number" id="min" class="form-control" style="width: 60px" value="1">' +
+                '<input type="number" class="form-control" style="width: 60px" value="1">' +
                 '</div>' +
                 '<div class="input-group" style="padding-top: 10px">' +
                 '<span class="input-group-addon" style="width: 60px">Max</span>' +
-                '<input type="number" id="max" class="form-control" style="width: 60px" value="10">' +
+                '<input type="number" class="form-control" style="width: 60px" value="10">' +
                 '</div>' +
                 '</div>' +
                 '</td>' +
@@ -932,6 +1248,8 @@
         $('#configTableBody > tr > .order').each(function (index) {
             $(this).text(index + 1);
         });
+
+        $('#configTableBody').children().last().show("slow");
 
         customGraphDataList.push($.extend(true, [], customDefaultData));
     }
@@ -942,7 +1260,7 @@
         customGraphDataList.splice($(object).parent().parent().children().first().text() - 1, 1);
         console.log("Data List now has " + customGraphDataList.length);
 
-        $(object).parent().parent().remove();
+        $(object).parent().parent().fadeOut("slow", function() {$(object).parent().parent().remove()});
 
         $('#configTableBody > tr > .order').each(function (index) {
             $(this).text(index + 1);
