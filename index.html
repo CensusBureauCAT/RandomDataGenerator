@@ -44,7 +44,7 @@
     <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>-->
 
 
-
+    <script src="http://www.parsecdn.com/js/parse-1.4.2.min.js"></script>
 
 </head>
 
@@ -422,6 +422,9 @@
     // Remove default text created next to load file button
     $('#loadFileItem').val("");
 
+    // Used as test case for 3250000000 entries
+    Parse.initialize("vv0wxFnw2CPn3hJwpNdHzIss3Wx7wsKyLTw3BMLA", "RmMDVcPMqPSDiMdA8CGFdwcvl71ksxt5Xpzwl7qd");
+
 
     // Set the default data for the two default rows. Also used when adding new rows.
     var customDefaultData = [
@@ -777,6 +780,48 @@
 
     //-- Generates random data and creates the table
     function generateTable() {
+
+
+        /*
+        var j = 0,k = 0, l = 0, m = 0;
+        var newString;
+        for (i=0; i < 325000000; i++) {
+            var TestObject = Parse.Object.extend("TestObject");
+            var testObject = new TestObject();
+            newString = i.toString();
+            testObject.save({foo: newString}).then(function(object) {
+                k++;
+                if (k == 1000) {
+                    k = 0;
+                    m++;
+                    console.log("Thousands Finished: " + m);
+                }
+                //console.log("Finished " + k);
+            });
+            j++;
+            if (j == 1000) {
+                j = 0;
+                l++;
+                console.log("Thousands sent: " +  l);
+            }
+            //console.log("Counting " + i);
+        }
+        console.log("Finished generating data");
+        */
+
+        /*
+        $("#exportLink")
+                .attr({
+                    'download': 'test.csv',
+                    'href': csvData,
+                    'target': '_blank'
+                });
+        */
+        /*
+        console.log("Exporting");
+        return;
+        */
+
         $("#exportLink").slideDown();
 
         console.log("Start table generation");
@@ -889,6 +934,8 @@
             }
             rowsString = rowsString + '</tr>';
         }
+
+
         // append only inserts fully formed html, hence the string.
         $("#resultTableTBody").append(rowsString);
         $("#resultTable").fadeIn("slow");
@@ -1351,7 +1398,7 @@
         // Add generated data to the custom list
         for (count = 0; count < numberOfRowsToAdd; count++) {
             $('#sourceList').append(
-                    '<table  style="width: 100%;" class="list-group-item" aria-hidden="false" style="visibility: hidden; display: none">' +
+                    '<table  style="width: 100%;" class="list-group-item">' +
                     '<tr style="width: 100%">' +
                     '<td class="list-group-td" contenteditable="true">' +
                     rowData[count] +
@@ -1369,7 +1416,7 @@
                     '</tr>' +
                     '</table>'
             );
-            //$('#sourceList').children().last().hide("fast");
+            $('#sourceList').children().last().hide();
             $('#sourceList').children().last().slideDown("fast");
         }
     }
@@ -1658,6 +1705,12 @@
         }
         coords = getMouseCoords(e, i);
 
+        // Do not delete or add if mouse was moved
+        console.log(xMouse + "," + yMouse);
+        if ((xMouse != coords.scrCoords[1]) || (yMouse != coords.scrCoords[2])) {
+            return;
+        }
+
         // Delete point clicked on
         for (el in board.objects) {
             //console.log("Name: " + JXG.getRef(board, board.objects[el]).name);
@@ -1668,12 +1721,6 @@
                 //console.log("Name of Point: " + JXG.getRef(board, board.objects[el]).name);
                 canCreate = false;
 
-                // Do not delete if the point was moved
-                if (!deletePoint) {
-                    return;
-                } else {
-                    deletePoint = false;
-                }
 
                 if (board.objects[el].name == "Start" || board.objects[el].name == "End") {
                     break;
@@ -1769,17 +1816,27 @@
         }
     };
 
+    var xMouse, yMouse;
     var down = function(e) {
+
+        var i, coords, el;
+
         console.log("Clicking mouse");
-        deletePoint = true;
+
+        if (e[JXG.touchProperty]) {
+            // index of the finger that is used to extract the coordinates
+            i = 0;
+        }
+        coords = getMouseCoords(e, i);
+
+        xMouse = coords.scrCoords[1];
+        yMouse = coords.scrCoords[2];
+        console.log("Mouse coords:" + xMouse + "," + yMouse);
+
     }
-    var move = function(e,mode) {
-        console.log("Moved mouse");
-        deletePoint = false;
-    }
+
     // Assign mouse/touch events
     board.on('down', down);
-    board.on('move', move);
     board.on('up', up);
 
 </script>
