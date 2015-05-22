@@ -544,7 +544,7 @@
             }
         });
 
-        jsonString = jsonString + "\n]}";
+        jsonString = jsonString + '\n],\n "seed:" ' + $("#randomSeed").val() +"}";
 
         // Data URI
         var fileData;
@@ -596,6 +596,8 @@
             newArr = JSON.parse(lines);
             console.log("Data file read as ");
             console.log(newArr);
+
+            $("#randomSeed").val(newArr.seed);
 
             $("#configTableBody").html("");
 
@@ -945,7 +947,6 @@
     function generateCustomData(index) {
         var result = [];
         var tableData = customGraphDataList[index];
-        var totalEntries = customGraphDataList[index].length;
 
         var chanceSeeded = new Chance(parseInt($("#randomSeed").val()));
 
@@ -956,12 +957,8 @@
             return [];
         }
 
-        // Generate all the points along the curve
-        var maxWeightIndex = 0;
-
-
         //console.log(tableData);
-        console.log("Total entries " + totalEntries);
+        //console.log("Total entries " + totalEntries);
         //console.log("Max weight " + maxWeightIndex);
 
         // Sort the list by weight
@@ -981,6 +978,7 @@
         var currentWeightValue = jQuery.extend(true, {}, tableData);
         result = [];
         if (tableData) {
+            /*
             var index = 0;
             var weightIndex = 0;
             // Loop until the specified number of rows is generated
@@ -1019,10 +1017,46 @@
                     }
                 }
             }
+            */
+            var totalWeight = 0;
+            var maxCountIndex = 0;
+            for(index in tableData) {
+                totalWeight = totalWeight + tableData[index].weight;
+                if (tableData[index].weight > maxCountIndex) {
+                    maxCountIndex = tableData[index].weight;
+                }
+            }
+
+            var countIndex = maxCountIndex;
+            var result = [];
+            var tableDataIndex = 0;
+            var totalGeneratedValues = $("#numberGenerated").val();
+            while (result.length < totalGeneratedValues) {
+                if (tableData[tableDataIndex].weight >= countIndex) {
+                    result.push(tableData[tableDataIndex].data);
+                }
+                tableDataIndex++;
+                if (tableDataIndex >= tableData.length) {
+                    tableDataIndex = 0;
+                    countIndex--;
+                    if (countIndex == 0) {
+                        countIndex = maxCountIndex;
+                    }
+                }
+            }
+
             //console.log(tableData);
             console.log("Custom data generated:");
             console.log(result);
-            result = chanceSeeded.shuffle(result);
+
+            // Randomize order
+            for (index in result) {
+                var swapIndex = chanceSeeded.integer({min: 0, max: (result.length - 1)});
+                var tempValue = result[index];
+                result[index] = result[swapIndex];
+                result[swapIndex] = tempValue;
+            }
+
             //console.log(result);
 
         }
