@@ -98,7 +98,8 @@
 
 
         <div class="row">
-            <div class="col-sm-offset-3 col-sm-6" style="border: 1px solid lightgray; border-radius: 4px">
+            <div class="col-sm-offset-3 col-sm-6"
+                 style="border: 1px solid lightgray; border-radius: 4px; box-shadow: 1px 2px 2px 2px #888888;">
 
                 <!-- This table is used to set columns to your random data table  -->
                 <table id="configTable" class="table table-hover">
@@ -326,13 +327,16 @@
             <!-- Custom column editor menu -->
             <div class="row" style="padding: 10px 20px; justify-content: center; display: flex;">
                 <!-- Number of rows to add/set -->
-                <div type="button" style="background-color: lightgray; border-radius: 4px; padding: 5px 10px 5px 10px" > <!-- Add/Set -->
+                <div type="button" style="background-color: lightgray; border-radius: 4px; padding: 5px 10px 5px 10px" >
                     <!-- Button to add rows -->
-                    <button type="button" class="btn btn-default" onclick="addGraphEntries()" style="padding-top: 2px; padding-bottom: 2px" >Add</button>
+                    <button type="button" class="btn btn-default" onclick="addGraphEntries()"
+                            style="padding-top: 2px; padding-bottom: 2px" >Add</button>
                     <!-- Button to set rows -->
-                    <button type="button" class="btn btn-default" onclick="setGraphEntries()" style="padding-top: 2px; padding-bottom: 2px" >Set</button>
+                    <button type="button" class="btn btn-default" onclick="setGraphEntries()"
+                            style="padding-top: 2px; padding-bottom: 2px" >Set</button>
 
-                    <input type="number" id="numberOfRowsToAdd" value="1" min="0" max="10000" style="text-align: center; width: 60px;" onchange="checkNumberCurve()">
+                    <input type="number" id="numberOfRowsToAdd" value="1" min="0" max="10000" style="text-align: center;
+                    width: 60px;" onchange="checkNumberCurve()">
                             <!-- Type of data to fill each row -->
                             <!-- Single dropdown button -->
                             <span class="btn-group">
@@ -360,9 +364,14 @@
             </div>
             <div class="row" id="numbersPanel" style="padding: 0px 0px 20px 0px; justify-content: center; display: flex;">
                 <div type="button" style="background-color: lightgray; border-radius: 4px; padding: 5px 10px 5px 10px" >
-                    Start<input type="number" id="start" value="1" style="text-align: center; width: 40px; margin-left: 5px" onchange="updateNumberCurve()">
-                    Step<input type="number" id="step" value="1" style="text-align: center; width: 40px; margin-left: 5px; margin-right: 5px" onchange="updateNumberCurve()">
-                    Function: y=<input type="text" id="function" value="x" style="width: 100px; margin-left: 5px" onchange="updateNumberCurve()">
+                    Start<input type="number" id="start" value="1"
+                                style="text-align: center; width: 40px; margin-left: 5px"
+                                onchange="updateNumberCurve()">
+                    Step<input type="number" id="step" value="1"
+                               style="text-align: center; width: 40px; margin-left: 5px; margin-right: 5px"
+                               onchange="updateNumberCurve()">
+                    Function: y=<input type="text" id="function" value="x"
+                                       style="width: 100px; margin-left: 5px" onchange="updateNumberCurve()">
                     <span id="question" class="question glyphicon glyphicon-question-sign"
                           data-toggle="tooltip"></span>
                 </div>
