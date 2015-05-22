@@ -66,32 +66,38 @@
 
 
         <!-- These dropdown menu imports and exports your data and settings -->
-        <div class="row" style="padding: 10px 20px;">
-            <div class="col-sm-offset-3 col-sm-6" style="justify-content: flex-end; display: flex">
+        <div class="row" style="padding-right: 10px; padding-bottom: 10px;">
+            <div class="col-sm-offset-8 col-sm-1" style="justify-content: flex-end; display: flex">
                 <span id="menu" class="glyphicon glyphicon-align-justify dropdown-toggle" onclick='$("#menuContainer").slideToggle()'></span>
             </div>
         </div>
 
         <!-- Button to import custom data from a CSV file.  No headers used -->
         <div id="menuContainer" class="row">
-            <div class="col-sm-offset-7 col-sm-2">
-                <div class="row" style="border-style: solid; border-width: 2px; border-radius: 4px;
-                    border-color: #FAF0E8; width: 200px;  padding: 4px;">
-                    <div style="width: 200px;">Load Source Data and</br>Settings
-                    <!--<div style="justify-content: center; display: flex;  width: 300px;">
-                        <input id="fileItem" type="file" onchange="importData()" style="padding: 10px;">
-                    </div> -->
+            <div class="col-sm-offset-3 col-sm-6" style="background-color: #ADC6E8; border-top-left-radius: 4px; border-top-right-radius: 4px; padding-top: 20px; padding-bottom: 20px">
+                <div style="float:right;">
+                    <table>
+                        <tr style="padding-top: 10px;">
+                            <td style="padding-right: 20px">
+                                <div style="border-style: solid; border-width: 2px; border-radius: 4px;
+                        border-color: #FAF0E8; height: 80px; width: 200px;  padding: 4px; padding-left: 15px; background-color: #E2CFB9">
+                                    <div style="width: 200px;">Load Source Data and</br>Settings
+                                        <input id="loadFileItem" type="file" class="btn btn-default"
+                                               onchange="loadSettings()" style="padding: 10px; width:110px;  display: inline;">
+                                    </div>
+                                </div>
 
-                        <input id="loadFileItem" type="file" class="btn btn-default"
-                               onchange="loadSettings()" style="padding: 10px; width:110px;  display: inline;">
-
-                    </div>
-                </div>
-                <div class="row" style="border-style: solid; border-width: 2px; border-radius: 4px;
-                border-color: #FAF0E8;width: 200px; padding: 4px; justify-content: center; display: flex;">
-                    <div style="width: 200px;">Save Source Data and</br>Settings
-                        <a class="btn btn-default" onclick="saveSettings(this)">Click to Save</a>
-                    </div>
+                            </td>
+                            <td>
+                                <div style="border-style: solid; border-width: 2px; border-radius: 4px;
+                    border-color: #FAF0E8;  height: 80px; width: 200px; padding: 4px;  padding-left: 15px; justify-content: center; display: flex; background-color: #E2CFB9">
+                                    <div style="width: 200px;">Save Source Data and</br>Settings
+                                        <a class="btn btn-default" onclick="saveSettings(this)">Click to Save</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
             </div>
         </div>
@@ -987,46 +993,7 @@
         var currentWeightValue = jQuery.extend(true, {}, tableData);
         result = [];
         if (tableData) {
-            /*
-            var index = 0;
-            var weightIndex = 0;
-            // Loop until the specified number of rows is generated
-            for	(index = 0; index < $("#numberGenerated").val(); index++) {
-                //console.log("index " + index + " weightIndex " + weightIndex);
 
-                // Get the next row data that as that has weight > 0
-                //console.log("Checking " + currentWeightValue[weightIndex].weight);
-                while (currentWeightValue[weightIndex].weight < 1) {
-                    //console.log("Checking " + currentWeightValue[weightIndex].weight);
-                    weightIndex++;
-                    //console.log("New weight index " + weightIndex);
-                    if (weightIndex >= totalEntries) {
-                        weightIndex = 0;
-                        if (currentWeightValue[0].weight <= 0) {
-                            //console.log("Full pass complete");
-                            currentWeightValue = jQuery.extend(true, {}, tableData);
-                        }
-                    }
-                }
-
-                // Add row data to result
-                //console.log("Using weight index " + weightIndex);
-                //console.log("Weight value " + currentWeightValue[weightIndex].weight);
-                result.push(tableData[weightIndex].data);
-
-                // Decrement and check to see if all weights have reached zero
-                currentWeightValue[weightIndex].weight--;
-                //console.log("Weight value " + currentWeightValue[weightIndex].weight);
-                weightIndex++;
-                if (weightIndex >= totalEntries) {
-                    weightIndex = 0;
-                    if (currentWeightValue[0].weight <= 0) {
-                        //console.log("Full pass complete");
-                        currentWeightValue = jQuery.extend(true, {}, tableData);
-                    }
-                }
-            }
-            */
             var totalWeight = 0;
             var maxCountIndex = 0;
             for(index in tableData) {
