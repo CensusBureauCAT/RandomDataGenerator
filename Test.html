@@ -1,34 +1,91 @@
 <!DOCTYPE html>
 <html>
 <head lang="en">
+
+    <!-- Metadata -->
+
     <meta charset="UTF-8">
-    <title></title>
-    <link href="jquery-ui-1.11.4/jquery-ui.css" rel="stylesheet">
-    <link href="dragtable-2.0.12/dragtable.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Random Data Generator">
+    <meta name="author" content="David Lee">
+
+    <!-- Stylesheets -->
+
+    <!-- Bootstrap -->
     <link href="bootstrap-3.3.2-dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- JSX Graph -->
+    <link href="JSXGraph/jsxgraph.css" rel="stylesheet">
+    <!-- JQuery UI -->
+    <link href="jquery-ui-1.11.4/jquery-ui.css" rel="stylesheet">
+    <!--<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">-->
+    <!-- Draggable Table Plugin -->
+    <link href="dragtable-2.0.12/dragtable.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="random-number-generator-stylesheet.css" rel="stylesheet">
+
+    <title></title>
+
+    <!-- Javascript Libraries -->
+
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="jquery-1.11.2.min.js"></script>
-    <script src="jquery-ui-1.11.4/jquery-ui.js"></script>
-    <script src="dragtable-2.0.12/jquery.dragtable.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="bootstrap-3.3.2-dist/js/bootstrap.min.js"></script>
+    <!-- Random data generator -->
+    <script src="chance.js"></script>
+    <!-- Papa Parse csv generator -->
+    <script src="PapaParse-4.1.0/papaparse.min.js"></script>
+    <!-- JSX Graph -->
+    <script src="JSXGraph/jsxgraphcore.js"></script>
+    <!-- JQuery UI -->
+    <script src="jquery-ui-1.11.4/jquery-ui.js"></script>
+    <!-- Draggable Table Plugin -->
+    <script src="dragtable-2.0.12/jquery.dragtable.js"></script>
+
+
+
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
 </head>
-<body>
-<!-- Single button -->
-<div class="btn-group">
-    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-        Action <span class="caret"></span>
-    </button>
-    <ul class="dropdown-menu" role="menu">
-        <li><a href="#">Action</a></li>
-        <li><a href="#">Another action</a></li>
-        <li><a href="#">Something else here</a></li>
-        <li class="divider"></li>
-        <li><a href="#">Separated link</a></li>
-    </ul>
+
+<body style="background-color: #E2CFB9">
+<div class="container-fluid">
+
+    <!-- Title -->
+    <div class="row">
+        <div class="col-sm-offset-3 col-sm-6" style="padding-top: 25px; padding-bottom: 25px">
+            <h1 style="text-align: center;">Random Data Generator</h1>
+        </div>
+    </div>
+
+
+
+
+
+        <span id="question2"
+              data-toggle="tooltip">A</span>
+    </div>
+
 </div>
-</ul>
+
+
 <script>
 
+    //$('#question').tooltip({animation:"true"});
+    $(document).ready(function(){
+        console.log("tooltip initializing");
+        $('[data-toggle="tooltip"]').tooltip(
+                {
+                    animation:"true",
+                    title:"Function tooltip",
+                    placement:"top"
+                }
+        );
+    });
+
+
 </script>
+
 </body>
 </html>
